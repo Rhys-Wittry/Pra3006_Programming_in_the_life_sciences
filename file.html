@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPARQL Query to UniProt</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<h1>SPARQL Query Results</h1>
+<div id="results"></div>  <!-- Where results will be displayed -->
+
+<script>
+  // Define the SPARQL query
+  const sparqlQuery = `
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
+    PREFIX up: <http://purl.uniprot.org/core/>
+    SELECT DISTINCT ?virus ?virusName ?protein ?proteinName 
+    WHERE
+    {
+        # Find viruses under the virus taxon (taxon ID 10239)
+  		?virus rdfs:subClassOf taxon:10239. # Virus taxa (Taxon ID 10239)
+        ?virus a up:Taxon .  
+        ?virus up:scientificName ?virusName . 
+        
+
+        # Ensure the virus does not infect Homo sapiens (human)
+  		?taxon up:host ?host .
+        FILTER NOT EXISTS { ?virus up:host taxon:9606 . }  # Exclude human host (Taxon ID 9606)
+
+        # Find proteins associated with the virus
+        ?protein up:organism ?virus .  # Protein belongs to the virus taxonomy
+        ?protein rdfs:label ?proteinName .  # Get the protein's name
+    }
+  `;
+  
+  // Define the SPARQL endpoint URL
+  const endpointUrl = 'https://sparql.uniprot.org/sparql';
+
+  // Function to execute the SPARQL query
+  async function runQuery() {
+    try {
+      // Send the SPARQL query to the UniProt endpoint with GET method
+      console.log('Sending query to endpoint...');
+      const response = await fetch(`${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}&format=tsv`);
+
+      // Check if the response is OK
+      if (response.ok) {
+        console.log('Query successful, fetching data...');
+        
+        // Get the response as text (since it's TSV format)
+        const tsvData = await response.text();
+        console.log('Raw TSV data received:');
+        console.log(tsvData);  // Log the raw TSV response
+
+        // Parse TSV data into an array of rows
+        const rows = tsvData.split('\n').map(row => row.split('\t'));
+        console.log('Parsed rows:', rows);  // Log parsed rows for debugging
+
+        // Check if we got any rows of data
+        if (rows.length > 1) {
+          let resultsHtml = '<table>';
+          resultsHtml += '<thead><tr><th>Virus Name</th><th>Protein Name</th></tr></thead>';
+          resultsHtml += '<tbody>';
+
+          // Loop through the rows and add them to the table, skipping the header row
+          rows.slice(1).forEach(row => {
+            console.log('Processing row:', row);  // Log each row for debugging
+            // Ensure the row has the expected number of columns (adjust if necessary)
+            if (row.length >= 4) {
+              // Add the virus name (index 1) and protein name (index 3)
+              resultsHtml += `<tr><td>${row[1]}</td><td>${row[3]}</td></tr>`;
+            } else {
+              console.log('Skipping row due to unexpected format:', row);
+            }
+          });
+
+          resultsHtml += '</tbody></table>';
+          document.getElementById('results').innerHTML = resultsHtml;
+        } else {
+          console.log('No results found in TSV data.');
+          document.getElementById('results').innerHTML = 'No results found.';
+        }
+      } else {
+        console.error('Failed to fetch data. Response was not OK');
+        document.getElementById('results').innerHTML = 'Failed to fetch data from the endpoint.';
+      }
+    } catch (error) {
+      console.error('Error running query:', error);
+      document.getElementById('results').innerHTML = 'An error occurred while fetching data.';
+    }
+  }
+
+  // Run the query when the page loads
+  runQuery();
+</script>
+
+</body>
+</html>
