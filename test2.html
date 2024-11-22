@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming for the Life Sciences Project</title>
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            background-color: #f1c40f;
+            background-image: url('https://img.freepik.com/vector-premium/patron-fisuras-virus-diferentes-tipos-virus-ilustracion-vectorial-plana-fondo-virus_742418-50.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+        }
+
+        /* Section Styles */
+        section {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Search bar */
+        .search-bar {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            top: 80px;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #2c3e50;
+            border-radius: 5px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #34495e;
+        }
+
+        /* First Section Content */
+        .content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            max-width: 1200px;
+            width: 80%;
+            background-color: #c8efd8;
+            border-radius: 10px;
+            padding: 30px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 120px;
+        }
+
+        .text-section {
+            flex: 1;
+            padding-right: 40px;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 50px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 20px;
+            color: #555;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: justify;
+        }
+
+        /* Image Section */
+        .image-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .main-image {
+            width: 400px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* Scroll Arrow (Improved Aesthetic) */
+        .scroll-arrow {
+            margin-top: 30px;
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .scroll-arrow:hover {
+            background-color: #34495e;
+        }
+
+        .scroll-arrow i {
+            font-size: 20px;
+            transform: rotate(90deg);
+        }
+
+        /* Scroll Image */
+        .scroll-image {
+            margin-top: 0px;
+            width: 100px;
+            height: auto;
+        }
+
+        /* Second Section Styling for Icons */
+        .section-2 {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            background-image: url('https://static.vecteezy.com/system/resources/previews/005/318/460/non_2x/virus-or-bacteria-pattern-cartoon-style-vector.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+        }
+
+        /* Icon Container Styling */
+        .icon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Row of smaller icons */
+        .icon-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Circle Icon Styling */
+        .icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #2c3e50;
+            color: white;
+            font-size: 18px;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Larger Human Icon */
+        .icon.human {
+            width: 160px;
+            height: 160px;
+            font-size: 24px;
+        }
+
+        /* Smaller Icons */
+        .icon.dog, .icon.cat, .icon.pigeon, .icon.bat {
+            width: 100px;
+            height: 100px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" class="search-input" placeholder="Enter virus name...">
+        <button class="search-button">Search</button>
+    </div>
+
+    <!-- First Section -->
+    <section class="section-1">
+        <div class="content">
+            <div class="text-section">
+                <h1>Migration Viral Infections</h1>
+                <p class="description">
+                    This page aims to provide information on how viral infections are transmitted, what measures can be taken to prevent them, and how they affect public health. 
+                    Viral infections are a global concern that can be prevented through good hygiene practices, vaccination, and an understanding of the transmission mechanisms. 
+                    Here, we explore the most common ways of transmission, such as direct contact, respiratory droplets, and contaminated surfaces.
+                </p>
+            </div>
+            <div class="image-section">
+                <img src="https://miro.medium.com/max/759/1*926ELh-lw22v1SK0_gR0BA.png" alt="network example" class="main-image">
+            </div>
+        </div>
+
+        <div class="scroll-arrow">
+            <span>Scroll to Explore</span>
+        </div>
+
+        <img src="https://i.pinimg.com/originals/b6/fd/18/b6fd1893a54478eb393d13c5d1994ef7.gif" alt="scroll image" class="scroll-image">
+    </section>
+
+    <!-- Second Section (Icons for Human, Dog, Cat, Pigeon, and Bat) -->
+    <section class="section-2">
+        <div class="icon-container">
+            <!-- Larger Human Icon -->
+            <div class="icon human">
+                <span>Human</span>
+            </div>
+
+            <!-- Row of smaller icons -->
+            <div class="icon-row">
+                <div class="icon dog">
+                    <span>Dog</span>
+                </div>
+                <div class="icon cat">
+                    <span>Cat</span>
+                </div>
+                <div class="icon pigeon">
+                    <span>Pigeon</span>
+                </div>
+                <div class="icon bat">
+                    <span>Bat</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
