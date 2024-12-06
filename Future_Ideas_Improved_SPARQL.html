@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPARQL Query to UniProt</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<h1>SPARQL Query Results</h1>
+<div id="results"></div>  <!-- Where results will be displayed -->
+<div id="status">Loading...</div> <!-- Progress message -->
+
+<script>
+  const endpointUrl = 'https://sparql.uniprot.org/sparql';
+
+  // Function to execute the first query (to get viruses that infect humans)
+  async function getViruses() {
+    const virusQuery = `
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
+      PREFIX up: <http://purl.uniprot.org/core/>
+
+      SELECT ?taxon ?name
+      WHERE {
+        ?taxon a up:Taxon .  # Find taxons
+        ?taxon up:scientificName ?name .  # Get the scientific name
+        ?taxon rdfs:subClassOf taxon:10239 .  # Virus taxa (taxon ID 10239)
+        ?taxon up:host taxon:9606 .  # Virus infects humans
+      }
+    `;
+
+    try {
+      const response = await fetch(`${endpointUrl}?query=${encodeURIComponent(virusQuery)}&format=tsv`);
+      if (response.ok) {
+        const tsvData = await response.text();
+        const rows = tsvData.split('\n').map(row => row.split('\t'));
+        const viruses = rows.slice(1); // Skip header row
+        console.log('Viruses to process:', viruses);
+        loadVirusProteins(viruses);
+      } else {
+        console.error('Error fetching virus data');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  // Function to fetch protein data for each virus
+  async function loadVirusProteins(viruses) {
+    let virusIndex = 0;
+    const totalViruses = viruses.length;
+
+    // Loop through each virus and fetch its protein data
+    async function processNextVirus() {
+      if (virusIndex < totalViruses) {
+        const virus = viruses[virusIndex];
+        const taxonId = virus[0];  // Taxon ID (column 0)
+        const virusName = virus[1];  // Name of the virus (column 1)
+
+        // Display current progress
+        document.getElementById('status').textContent = `Loading data for virus: ${virusName} (${virusIndex + 1} of ${totalViruses})`;
+
+        // Run the second query to get protein data for the current virus
+        const proteinQuery = `
+          PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+          PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+          PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
+          PREFIX up: <http://purl.uniprot.org/core/>
+          PREFIX keywords: <http://purl.uniprot.org/keywords/>
+
+          SELECT ?protein ?proteinName ?sequence
+          WHERE {
+            ?protein up:organism <${taxonId}> .  # Virus organism
+            ?protein rdfs:label ?proteinName .  # Get the protein's name
+            ?protein up:sequence ?isoform .
+            ?isoform rdf:value ?sequence .  # Get the protein's sequence
+            ?protein up:classifiedWith keywords:945 .
+          }
+        `;
+
+        try {
+          const response = await fetch(`${endpointUrl}?query=${encodeURIComponent(proteinQuery)}&format=tsv`);
+          if (response.ok) {
+            const tsvData = await response.text();
+            const rows = tsvData.split('\n').map(row => row.split('\t'));
+
+            // Append protein data for the virus to the results
+            displayVirusProteinData(taxonId, virusName, rows.slice(1));  // Skip header row
+            virusIndex++;
+
+            // Process the next virus
+            processNextVirus();
+          } else {
+            console.error(`Error fetching protein data for virus: ${virusName}`);
+            virusIndex++;
+            processNextVirus();
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      } else {
+        document.getElementById('status').textContent = 'All data loaded!';
+      }
+    }
+
+    processNextVirus();
+  }
+
+  // Function to display the protein data for each virus
+  function displayVirusProteinData(taxonId, virusName, rows) {
+    let resultsHtml = '<table>';
+    resultsHtml += '<thead><tr><th>Taxon ID</th><th>Virus Name</th><th>Protein Name</th><th>Sequence</th></tr></thead>';
+    resultsHtml += '<tbody>';
+
+    rows.forEach(row => {
+      if (row.length >= 3) {
+        const proteinName = row[1];
+        const sequence = row[2];
+        resultsHtml += `<tr><td>${taxonId}</td><td>${virusName}</td><td>${proteinName}</td><td>${sequence}</td></tr>`;
+      }
+    });
+
+    resultsHtml += '</tbody></table>';
+    document.getElementById('results').innerHTML += resultsHtml;
+  }
+
+  // Start the process by fetching the list of viruses
+  getViruses();
+</script>
+
+</body>
+</html>
