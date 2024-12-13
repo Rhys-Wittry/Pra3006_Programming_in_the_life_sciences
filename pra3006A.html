@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming for the Life Sciences Project</title>
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            background-color: #2c3e50;
+            background-image: url('https://img.freepik.com/vector-premium/patron-fisuras-virus-diferentes-tipos-virus-ilustracion-vectorial-plana-fondo-virus_742418-50.jpg');
+            background-size: auto;
+        }
+        /* Section Styles */
+        section {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        /* Dropdown Menu */
+        .menu-container {
+            position: relative;
+            display: inline-block; /* Ensures it doesn't stretch to fill the container */
+            margin-left: 0; /* Align to the left */
+            margin-top: 10px;
+        }
+
+        .menu-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px
+        }
+
+        .menu-btn:hover {
+            background-color: #34495e;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%; /* Place it directly below the menu button */
+            left: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            font-weight: bold;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .menu-container:hover .dropdown-content {
+            display: block;
+        }
+
+        /* First Section Content */
+        .content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            max-width: 800px;
+            width: 80%;
+            background-color: #c8efd8;
+            border-radius: 10px;
+            padding: 30px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-section {
+            flex: 1;
+            padding-right: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 50px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 20px;
+            color: #555;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: justify;
+        }
+
+        /* Scroll Arrow (Improved Aesthetic) */
+        .scroll-arrow {
+            margin-top: 1px;
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-weight: bold;
+        }
+
+        .scroll-arrow:hover {
+            background-color: #34495e;
+        }
+
+        .scroll-arrow i {
+            font-size: 20px;
+            transform: rotate(90deg);
+        }
+
+        /* Scroll Image */
+        .scroll-image {
+            margin-top: 1px;
+            width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu -->
+    <div class="search-bar">
+        <div class="menu-container">
+            <button class="menu-btn">Menu</button>
+            <div class="dropdown-content">
+                <a href="pra3006A.html">Home page</a>
+                <a href="page3.html">About Project</a>
+                <a href="page2.html">Visualizer</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- First Section -->
+    <section class="section-1">
+        <div class="content">
+            <div class="text-section">
+                <h1>Migration Viral Infections</h1>
+                <p class="description">
+                    The visualizer is an interactive tool designed to showcase the relationships between viruses and their host species, 
+                    such as Humans, Dogs, Cats, and Rats. It analyzes the similarity of protein sequences across different viruses, 
+                    providing insights into how closely related these viruses are. 
+                    <br>
+                    Each node in the graph represents a species, a virus, 
+                    or a protein, while the edges (links) between nodes illustrate the degree of similarity between protein sequences. 
+                    The colors of nodes and edges reflect similarity levels, with higher similarities represented by warmer colors.
+                    This tool leverages SPARQL queries to retrieve real-time data from the UniProt database, a leading repository of 
+                    protein sequence and functional information. By using this data, the visualizer ensures accurate and comprehensive 
+                    insights into viral proteins and their interactions.
+                    <br>
+                    The visualizer is particularly useful for exploring potential zoonotic risks, identifying viruses that may share 
+                    binding sites, or studying the evolutionary relationships between viruses. Users can interact with the graph by
+                    hovering over nodes to see details, dragging elements to reorganize the view, or zooming in and out to focus on
+                    specific areas. Whether you’re a researcher or simply curious about virology, this visualizer offers an intuitive
+                    way to explore the complex interactions between viruses and their hosts.
+                </p>
+            </div>
+        </div>
+        <img src="https://i.pinimg.com/originals/b6/fd/18/b6fd1893a54478eb393d13c5d1994ef7.gif" alt="scroll image" class="scroll-image">
+        <div class="scroll-arrow" onclick="window.location.href='page2.html'">
+            <span>SPARQL visualizer</span>
+        </div>
+    </section>
+</body>
+</html>

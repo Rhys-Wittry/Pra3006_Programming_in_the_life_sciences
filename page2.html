@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming for the Life Sciences Project</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.0/d3.min.js"></script>
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 50px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            background-color: #2c3e50;
+            background-image: url('https://img.freepik.com/vector-premium/patron-fisuras-virus-diferentes-tipos-virus-ilustracion-vectorial-plana-fondo-virus_742418-50.jpg');
+            background-size: auto;
+        }
+        /* Section Styles */
+        section {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        /* Dropdown Menu */
+        .menu-container {
+            position: relative;
+            display: inline-block;
+            margin-left: 0;
+            margin-top: 10px;
+        }
+
+        .menu-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .menu-btn:hover {
+            background-color: #34495e;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            font-weight: bold;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .menu-container:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Loading indicator */
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            background-color: #f9f9f9;
+            padding: 10px 20px;
+            border: 2px solid #2c3e50;
+            border-radius: 5px;
+            display: none; /* Initially hidden */
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu -->
+    <div class="search-bar">
+        <div class="menu-container">
+            <button class="menu-btn">Menu</button>
+            <div class="dropdown-content">
+                <a href="pra3006A.html">Home page</a>
+                <a href="page3.html">About Project</a>
+                <a href="page2.html">Visualizer</a>
+            </div>
+        </div>
+    </div>
+    <!-- Visualizer -->
+    <h1>Migration Viral Infections</h1>
+    <div id="loading">The query is loading... Please wait.</div> <!-- Loading Indicator -->
+    <div id="results-container"></div>
+</body>
+<script src="pra3006.js"></script>
+</html>
